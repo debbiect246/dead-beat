@@ -28,8 +28,9 @@ function preload () {
 
 function create () {
     // Sky image
-    this.add.image(400,300, 'sky');
+    sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
 }
 
 function update () {
+    sky.tilePositionY += 0.2;
 }

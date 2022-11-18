@@ -29,6 +29,7 @@ var beatsGroup;
 function preload () {
     this.load.image('sky', './assets/images/sky.png');
     this.load.image('beat', './assets/images/beat.png');
+    this.load.image('player', './assets/images/temp-player-sprite.png')
 }
 
 
@@ -42,6 +43,8 @@ function create () {
     // Create a timed event that will spawn an object for each note, defined by BPM and notesPerBeat
     beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true });
     beatRemoverEvent = this.time.addEvent({ delay: 1000, callback: beatRemover, callbackScope: this, loop: true });
+
+    player = this.physics.add.sprite(300, 50, 'player')
     
 }
 

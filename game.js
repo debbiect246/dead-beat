@@ -22,14 +22,15 @@ var game = new Phaser.Game(config);
 
 function preload () {
     this.load.image('sky', './assets/images/sky.png');
-    // Set up sky for scrolling
 }
 
 
 function create () {
-    // Sky image
-    this.add.image(400,300, 'sky');
+    // Sky image (added as tileSprite to access the scrolling method)
+    sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
 }
 
 function update () {
+    // Tells the sky to scroll at a specific speed
+    sky.tilePositionY += 0.2;
 }

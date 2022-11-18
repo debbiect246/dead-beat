@@ -33,6 +33,7 @@ var sequence = [1,0,0,0,2,0,0,0,3,0,0,0,4,0,0,0,1,0,1,0,2,0,2,0,3,0,3,0,4,0,4,0,
 var currentNote = 0; // Where we currently are in the sequence
 var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
 var beatSpawnerEvent;
+var activeMovement = false;
 
 
 function preload () {
@@ -59,7 +60,7 @@ function create () {
     beatRemoverEvent = this.time.addEvent({ delay: 1000, callback: beatRemover, callbackScope: this, loop: true });
 
     // Create the player sprite and remove gravity from it.
-    player = this.physics.add.sprite(100, 150, 'player')
+    player = this.physics.add.sprite(300, 150, 'player')
     player.setCollideWorldBounds(true)
     player.body.allowGravity = false
     
@@ -75,14 +76,41 @@ function update () {
 
     // Move the player on left and right key inputs
     if (movementKeys.left.isDown) {
-        player.x -= 25
+        if (player.x !== 100) {
+            dashLeft()
+        }
     } else if (movementKeys.right.isDown) {
-        player.x += 25
-    } else {
-        player.setVelocityX(0)
+        if (player.x !== 700) {
+            dashRight()
+        }
     }
 }
 
+function dashLeft() {
+    target = (player.x - 200)
+    while (activeMovement === false) {
+        player.x -= 1
+        if (player.x === target) {
+            activeMovement = true
+        }
+    }
+    dashCooldown = setTimeout(function() {
+        activeMovement = false
+    }, 75)
+}
+
+function dashRight() {
+    target = (player.x + 200)
+    while (activeMovement === false) {
+        player.x += 1
+        if (player.x === target) {
+            activeMovement = true
+        }
+    }
+    dashCooldown = setTimeout(function() {
+        activeMovement = false
+    }, 75)
+}
 
 function beatSpawn() {
     // Creates the beat object, sets its capped velocity

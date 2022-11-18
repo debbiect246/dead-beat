@@ -23,6 +23,6 @@
 ## Credits
 
 * [Be sure to credit any assets that are not yours](https://www.example.com)
-* [Member 1 Linkedin](https://www.linkedin.com)
+* [Kelvin Ward](https://www.linkedin.com/in/kelvinhere/)
 * [Member 2 Linkedin](https://www.linkedin.com)
 * [etc. etc.](https://www.example.com)

@@ -46,6 +46,7 @@ function create () {
 
     // Create the player sprite and remove gravity from it.
     player = this.physics.add.sprite(100, 150, 'player')
+    player.setCollideWorldBounds(true)
     player.body.allowGravity = false
     
     // Create variable that stores common key inputs

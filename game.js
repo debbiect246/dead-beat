@@ -20,9 +20,10 @@ var config = {
 var game = new Phaser.Game(config);
 
 // Initialise variables
-var beatsPerMin = 80;  // Set this to the BPM of the song
+var beatsPerMin = 40;  // Set this to the BPM of the song
 var beatsPerMillisecond = 60000 / beatsPerMin;
-var beatsPerBar;
+var notesPerBeat = 4; // Default 4/4 measure
+var beatsPerBar = beatsPerMillisecond / notesPerBeat;
 
 function preload () {
     this.load.image('sky', './assets/images/sky.png');
@@ -33,8 +34,8 @@ function preload () {
 function create () {
     // Sky image (added as tileSprite to access the scrolling method)
     sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
-    // Create a timed event that will spawn an object for each beat of the music (to be quartered eventually for 1/4 notes)
-    timedEvent = this.time.addEvent({ delay: beatsPerMillisecond, callback: beatSpawn, callbackScope: this, loop: true });
+    // Create a timed event that will spawn an object for each note, defined by BPM and notesPerBeat
+    timedEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true });
     
 }
 

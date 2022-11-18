@@ -44,15 +44,28 @@ function create () {
     beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true });
     beatRemoverEvent = this.time.addEvent({ delay: 1000, callback: beatRemover, callbackScope: this, loop: true });
 
-    player = this.physics.add.sprite(300, 150, 'player')
+    // Create the player sprite and remove gravity from it.
+    player = this.physics.add.sprite(100, 150, 'player')
     player.body.allowGravity = false
     
+    // Create variable that stores common key inputs
+    movementKeys = this.input.keyboard.createCursorKeys()
+
 }
 
 
 function update () {
     // Tells the sky to scroll at a specific speed
     sky.tilePositionY += 0.2;
+
+    // Move the player on left and right key inputs
+    if (movementKeys.left.isDown) {
+        player.x -= 25
+    } else if (movementKeys.right.isDown) {
+        player.x += 25
+    } else {
+        player.setVelocityX(0)
+    }
 }
 
 

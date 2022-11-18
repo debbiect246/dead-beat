@@ -44,7 +44,8 @@ function create () {
     beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true });
     beatRemoverEvent = this.time.addEvent({ delay: 1000, callback: beatRemover, callbackScope: this, loop: true });
 
-    player = this.physics.add.sprite(300, 50, 'player')
+    player = this.physics.add.sprite(300, 150, 'player')
+    player.body.allowGravity = false
     
 }
 

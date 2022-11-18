@@ -36,7 +36,11 @@ var beatSpawnerEvent;
 function preload () {
     this.load.image('sky', './assets/images/sky.png');
     this.load.image('beat', './assets/images/beat.png');
+
+    this.load.image('player', './assets/images/temp-player-sprite.png')
+
     this.load.image('gameFailed', './assets/images/game-failed.png');
+
 }
 
 
@@ -51,13 +55,30 @@ function create () {
     beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true });
     // Timed event runs once a second to remove missed beats
     beatRemoverEvent = this.time.addEvent({ delay: 1000, callback: beatRemover, callbackScope: this, loop: true });
+
+    // Create the player sprite and remove gravity from it.
+    player = this.physics.add.sprite(100, 150, 'player')
+    player.setCollideWorldBounds(true)
+    player.body.allowGravity = false
     
+    // Create variable that stores common key inputs
+    movementKeys = this.input.keyboard.createCursorKeys()
+
 }
 
 
 function update () {
     // Tells the sky to scroll at a specific speed
     sky.tilePositionY += 0.2;
+
+    // Move the player on left and right key inputs
+    if (movementKeys.left.isDown) {
+        player.x -= 25
+    } else if (movementKeys.right.isDown) {
+        player.x += 25
+    } else {
+        player.setVelocityX(0)
+    }
 }
 
 

@@ -1,4 +1,4 @@
-# 🎸 **Musical Invaders!** 👽 
+# 🎸 **Dead-beat** 👽 
 ## *The world of music is under attack!!*
 
 ![image info](./screenshot.png)
@@ -13,7 +13,7 @@
 
 ### Deployed link
 
-[Click here to play!](https://www.example.com)
+[Click here to play!](https://debbiect246.github.io/dead-beat/)
 
 ### How to install
 

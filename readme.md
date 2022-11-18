@@ -24,5 +24,6 @@
 
 * [Be sure to credit any assets that are not yours](https://www.example.com)
 * [Kelvin Ward](https://www.linkedin.com/in/kelvinhere/)
+* [Shaun Buck](https://www.linkedin.com/in/shaun-buck-749093221/)
 * [Member 2 Linkedin](https://www.linkedin.com)
 * [etc. etc.](https://www.example.com)

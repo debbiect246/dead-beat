@@ -86,6 +86,10 @@ function update () {
     }
 }
 
+/**
+ * Checks the current player position and creates a target that is 200px to the left of that.
+ * Prevents the user from dashing again for a a short period once the target destination is reached.
+ */
 function dashLeft() {
     target = (player.x - 200)
     while (activeMovement === false) {
@@ -99,6 +103,10 @@ function dashLeft() {
     }, 75)
 }
 
+/**
+ * Checks the current player position and creates a target that is 200px to the right of that.
+ * Prevents the user from dashing again for a a short period once the target destination is reached.
+ */
 function dashRight() {
     target = (player.x + 200)
     while (activeMovement === false) {

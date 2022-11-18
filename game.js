@@ -2,6 +2,7 @@ var config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    parent: 'phaser-container',
     physics: {
         default: 'arcade',
         arcade: {
@@ -18,6 +19,7 @@ var config = {
 
 // Create game object
 var game = new Phaser.Game(config);
+
 
 // Initialise variables
 var beatsPerMin = 80;  // Set this to the BPM of the song

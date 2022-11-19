@@ -5,7 +5,7 @@
 
 ## How to play
 
-* Arrow keys - move
+* Arrow keys - move left and right
 * Space bar - shoot
 * Destroy all aliens to progress
 

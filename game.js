@@ -34,6 +34,7 @@ var currentNote = 0; // Where we currently are in the sequence
 var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
 var beatSpawnerEvent;
 var activeMovement = false;
+var continueMoving = false;
 var spacePressed = false;
 // Multiplier determines how much the score is incremented for each beat hit accurately.
 var scoreMultiplier = 1.0;
@@ -91,11 +92,11 @@ function update () {
 
     // Move the player on left and right key inputs
     if (movementKeys.left.isDown) {
-        if (player.x !== 100) {
+        if (player.x !== 100 && activeMovement === false) {
             dashLeft()
         }
     } else if (movementKeys.right.isDown) {
-        if (player.x !== 700) {
+        if (player.x !== 700 && activeMovement === false) {
             dashRight()
         }
     }
@@ -106,16 +107,18 @@ function update () {
  * Prevents the user from dashing again for a a short period once the target destination is reached.
  */
 function dashLeft() {
+    activeMovement = true
+    continueMoving = true
     target = (player.x - 200)
-    while (activeMovement === false) {
+    while (continueMoving === true) {
         player.x -= 1
         if (player.x === target) {
-            activeMovement = true
+            continueMoving = false
         }
     }
     dashCooldown = setTimeout(function() {
         activeMovement = false
-    }, 75)
+    }, 100)
 }
 
 /**
@@ -123,16 +126,18 @@ function dashLeft() {
  * Prevents the user from dashing again for a a short period once the target destination is reached.
  */
 function dashRight() {
+    activeMovement = true
+    continueMoving = true
     target = (player.x + 200)
-    while (activeMovement === false) {
+    while (continueMoving === true) {
         player.x += 1
         if (player.x === target) {
-            activeMovement = true
+            continueMoving = false
         }
     }
     dashCooldown = setTimeout(function() {
         activeMovement = false
-    }, 75)
+    }, 100)
 }
 
 /**

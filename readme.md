@@ -23,7 +23,9 @@
 ## Credits
 
 * [Be sure to credit any assets that are not yours](https://www.example.com)
+
+##Linked in details of team members
 * [Kelvin Ward](https://www.linkedin.com/in/kelvinhere/)
 * [Shaun Buck](https://www.linkedin.com/in/shaun-buck-749093221/)
-* [Member 2 Linkedin](https://www.linkedin.com)
+* [Debbie Thompson](//www.linkedin.com/in/debbie-thompson-1baa4733/)
 * [etc. etc.](https://www.example.com)

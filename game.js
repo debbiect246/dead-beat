@@ -67,6 +67,10 @@ function create () {
     // Create variable that stores common key inputs
     movementKeys = this.input.keyboard.createCursorKeys()
 
+    // Check for overlap between player and beat.
+    this.physics.add.overlap(beatsGroup, player, function(beat) {
+        checkSpacebarInput(beat)
+    })
 }
 
 
@@ -118,6 +122,17 @@ function dashRight() {
     dashCooldown = setTimeout(function() {
         activeMovement = false
     }, 75)
+}
+
+function checkSpacebarInput(beat) {
+    if (movementKeys.space.isDown) {
+        beat.destroy()
+        incrementScore() 
+    }
+}
+
+function incrementScore() {
+
 }
 
 function beatSpawn() {

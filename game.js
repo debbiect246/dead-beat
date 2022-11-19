@@ -34,6 +34,9 @@ var currentNote = 0; // Where we currently are in the sequence
 var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
 var beatSpawnerEvent;
 var activeMovement = false;
+// Multiplier determines how much the score is incremented for each beat hit accurately.
+var scoreMultiplier = 1.0;
+var score = 0;
 
 
 function preload () {
@@ -71,6 +74,10 @@ function create () {
     this.physics.add.overlap(beatsGroup, player, function(beat) {
         checkSpacebarInput(beat)
     })
+
+    // Displays the current score and multiplier.
+    scoreText = this.add.text(100, 25, 'Score = 0', {fontSize: '20px', fill: '#000000'})
+    multiplierText = this.add.text(100, 50, 'Multiplier = 1.0x', {fontSize: '20px', fill: '#000000'})
 }
 
 
@@ -124,6 +131,11 @@ function dashRight() {
     }, 75)
 }
 
+/**
+ * If space is hit whilst the player and a beat overlap, this function is called.
+ * Triggers the increment score function and destroys the current beat.
+ * @param beat - Contains the current beat that is overlapping the player.
+ */
 function checkSpacebarInput(beat) {
     if (movementKeys.space.isDown) {
         beat.destroy()
@@ -131,8 +143,18 @@ function checkSpacebarInput(beat) {
     }
 }
 
+/**
+ * Increases the score by (10 * score multiplier).
+ * Then increases the multiplier by 0.2x if it is less then the cap which is 5.0x
+ * Edits game text accordingly.
+ */
 function incrementScore() {
-
+    score += 10 * scoreMultiplier
+    if (scoreMultiplier < 5.0) {
+        scoreMultiplier = (scoreMultiplier * 10 + 2) / 10 
+    }
+    scoreText.setText(`Score = ${score}`)
+    multiplierText.setText(`Multiplier = ${scoreMultiplier}x`)
 }
 
 function beatSpawn() {

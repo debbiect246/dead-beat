@@ -34,6 +34,7 @@ var currentNote = 0; // Where we currently are in the sequence
 var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
 var beatSpawnerEvent;
 var activeMovement = false;
+var spacePressed = false;
 // Multiplier determines how much the score is incremented for each beat hit accurately.
 var scoreMultiplier = 1.0;
 var score = 0;
@@ -69,6 +70,9 @@ function create () {
     
     // Create variable that stores common key inputs
     movementKeys = this.input.keyboard.createCursorKeys()
+    movementKeys.space.on('up', function() {
+        spacePressed = false
+    })
 
     // Check for overlap between player and beat.
     this.physics.add.overlap(beatsGroup, player, function(beat) {
@@ -138,8 +142,11 @@ function dashRight() {
  */
 function checkSpacebarInput(beat) {
     if (movementKeys.space.isDown) {
-        beat.destroy()
-        incrementScore() 
+        if (spacePressed === false) {
+            beat.destroy()
+            incrementScore() 
+            spacePressed = true
+        }
     }
 }
 

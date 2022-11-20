@@ -82,6 +82,8 @@ function create () {
     // Displays the current score and multiplier.
     scoreText = this.add.text(100, 25, 'Score = 0', {fontSize: '20px', fill: '#000000'})
     multiplierText = this.add.text(100, 50, 'Multiplier = 1.0x', {fontSize: '20px', fill: '#000000'})
+    scoreText.visible = false
+    multiplierText.visible = false
 
     // Create an initially paused timed event that will spawn an object for each note, defined by BPM and notesPerBeat
     beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true, paused: true });
@@ -121,6 +123,9 @@ function startGame() {
     titleScreen.body.gravity.y = -800;
     beatSpawnerEvent.paused = false;
     beatRemoverEvent.paused = false;
+    // Displays score text once game is running.
+    scoreText.visible = true
+    multiplierText.visible = true
     // Start music here too
 }
 

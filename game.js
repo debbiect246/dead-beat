@@ -22,14 +22,14 @@ var game = new Phaser.Game(config);
 
 
 // Initialise variables
-var beatsPerMin = 80;  // Set this to the BPM of the song
+var beatsPerMin = 90;  // Set this to the BPM of the song
 var notesPerBeat = 4; // Default 4/4 measure
 
 var beatsPerMillisecond = 60000 / beatsPerMin;
 var beatsPerBar = beatsPerMillisecond / notesPerBeat;
 var beatsGroup;
 // Sequence defines where the beats will spawn 1 to 4 are left to right, zero is no beat, on 4 notes per beat (default) 1,0,0,0 would be one note per beat)
-var sequence = [1,0,0,0,2,0,0,0,3,0,0,0,4,0,0,0,1,0,1,0,2,0,2,0,3,0,3,0,4,0,4,0,2,2,2,2,3,3,3,3,1,1,1,1,4,4,4,4,2,3,2,3,2,3,2,3,2,3,2,3]
+var sequence = [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1]
 var currentNote = 0; // Where we currently are in the sequence
 var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
 var beatSpawnerEvent;
@@ -56,7 +56,7 @@ function preload () {
     this.load.image('loseSprite', './assets/images/lose-player-sprite.png')
 
     // loads audio
-    this.load.audio('gameMusic', './assets/audio/game-music.wav')
+    this.load.audio('gameMusic', './assets/audio/track-1.mp3')
     this.load.audio('ding', './assets/audio/ding.mp3')
     this.load.audio('scream', './assets/audio/wilhelm.mp3')
 }

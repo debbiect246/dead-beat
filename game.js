@@ -33,22 +33,30 @@ var sequence = [1,0,0,0,2,0,0,0,3,0,0,0,4,0,0,0,1,0,1,0,2,0,2,0,3,0,3,0,4,0,4,0,
 var currentNote = 0; // Where we currently are in the sequence
 var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
 var beatSpawnerEvent;
-var activeMovement = false;
-var continueMoving = false;
+var allowControl = false;
+var movingLeft = false;
+var movingRight = false;
 var spacePressed = false;
+var gameStarted = false;
+var titleScreen;
 // Multiplier determines how much the score is incremented for each beat hit accurately.
 var scoreMultiplier = 1.0;
 var score = 0;
 
 
 function preload () {
+    // loads images
     this.load.image('sky', './assets/images/sky.png');
     this.load.image('beat', './assets/images/beat.png');
-
     this.load.image('player', './assets/images/temp-player-sprite.png')
-
     this.load.image('gameFailed', './assets/images/game-failed.png');
+    this.load.image('titleScreen', './assets/images/title-screen.png');
+    this.load.image('winSprite', './assets/images/win-player-sprite.png')
+    this.load.image('loseSprite', './assets/images/lose-player-sprite.png')
 
+    // loads audio
+    this.load.audio('gameMusic', './assets/audio/game-music.wav')
+    this.load.audio('ding', './assets/audio/ding.mp3')
 }
 
 
@@ -59,10 +67,8 @@ function create () {
     // Create the group for beats
     beatsGroup = this.add.group();
 
-    // Create a timed event that will spawn an object for each note, defined by BPM and notesPerBeat
-    beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true });
-    // Timed event runs once a second to remove missed beats
-    beatRemoverEvent = this.time.addEvent({ delay: 1000, callback: beatRemover, callbackScope: this, loop: true });
+    // Create variable that stores the games music
+    gameMusic = this.sound.add('gameMusic')
 
     // Create the player sprite and remove gravity from it.
     player = this.physics.add.sprite(300, 150, 'player')
@@ -75,6 +81,9 @@ function create () {
         spacePressed = false
     })
 
+    // Create an s key to start the game 
+    keys = this.input.keyboard.addKeys("S");
+
     // Check for overlap between player and beat.
     this.physics.add.overlap(beatsGroup, player, function(beat) {
         checkSpacebarInput(beat)
@@ -83,6 +92,34 @@ function create () {
     // Displays the current score and multiplier.
     scoreText = this.add.text(100, 25, 'Score = 0', {fontSize: '20px', fill: '#000000'})
     multiplierText = this.add.text(100, 50, 'Multiplier = 1.0x', {fontSize: '20px', fill: '#000000'})
+    scoreText.visible = false
+    multiplierText.visible = false
+
+    // Create an initially paused timed event that will spawn an object for each note, defined by BPM and notesPerBeat
+    beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true, paused: true });
+    // Timed event runs once a second to remove missed beats
+    beatRemoverEvent = this.time.addEvent({ delay: 500, callback: beatRemover, callbackScope: this, loop: true, paused: true });
+
+    // Title Screens
+    titleScreen = this.physics.add.sprite(400, 300, 'titleScreen');
+    titleScreen.body.allowGravity = false;
+
+    // Create end screen sprites and text and hide them for now.
+    winImage = this.add.sprite(400, 300, 'winSprite')
+    winImage.visible = false;
+    winText = this.add.text(40, 25, 'Congratulations, You Survived!', {fontSize: '40px', fill: '#000000'})
+    winText.visible = false;
+    
+    loseImage = this.add.sprite(400, 300, 'loseSprite')
+    loseImage.visible = false;
+    loseText = this.add.text(300, 25, 'Uh Oh...', {fontSize: '40px', fill: '#000000'})
+    loseText.visible = false;
+    
+    finalScoreText = this.add.text(260, 80, 'Final Score: 0', {fontSize: '30px', fill: '#000000'})
+    finalScoreText.visible = false
+    restartText = this.add.text(260, 520, 'Click to Restart!', {fontSize: '30px', fill: '#000000'})
+    restartText.visible = false
+    
 }
 
 
@@ -90,55 +127,64 @@ function update () {
     // Tells the sky to scroll at a specific speed
     sky.tilePositionY += 0.2;
 
-    // Move the player on left and right key inputs
-    if (movementKeys.left.isDown) {
-        if (player.x !== 100 && activeMovement === false) {
-            dashLeft()
-        }
-    } else if (movementKeys.right.isDown) {
-        if (player.x !== 700 && activeMovement === false) {
-            dashRight()
+    // Player movement
+    if (allowControl == true) {
+        handleMovemet();
+    }
+
+    if (keys.S.isDown) {
+        if (gameStarted == false) {
+            gameStarted = true;
+            startGame();
         }
     }
 }
 
-/**
- * Checks the current player position and creates a target that is 200px to the left of that.
- * Prevents the user from dashing again for a a short period once the target destination is reached.
- */
-function dashLeft() {
-    activeMovement = true
-    continueMoving = true
-    target = (player.x - 200)
-    while (continueMoving === true) {
-        player.x -= 1
-        if (player.x === target) {
-            continueMoving = false
-        }
-    }
-    dashCooldown = setTimeout(function() {
-        activeMovement = false
-    }, 100)
+
+//start game
+function startGame() {
+    gameStarted = true;
+    allowControl = true;
+    // destroy Title screen or animate up from here
+    titleScreen.body.allowGravity = true;
+    titleScreen.body.gravity.y = -800;
+    beatSpawnerEvent.paused = false;
+    beatRemoverEvent.paused = false;
+    // Displays score text once game is running.
+    scoreText.visible = true
+    multiplierText.visible = true
+    // Start music after delay to sync with beats
+    setTimeout(function() {
+        gameMusic.play()
+    }, 2000)
 }
 
-/**
- * Checks the current player position and creates a target that is 200px to the right of that.
- * Prevents the user from dashing again for a a short period once the target destination is reached.
- */
-function dashRight() {
-    activeMovement = true
-    continueMoving = true
-    target = (player.x + 200)
-    while (continueMoving === true) {
-        player.x += 1
-        if (player.x === target) {
-            continueMoving = false
+
+// Handle player movement
+function handleMovemet() {
+    if (movementKeys.left.isDown && movingLeft == false && movingRight == false) {
+        if (player.x !== spawnerPositions[1]) { // Make sure player is not at far left of screen
+            movingLeft = true;
+            player.x -= 200;
         }
     }
-    dashCooldown = setTimeout(function() {
-        activeMovement = false
-    }, 100)
+    
+    if (movementKeys.right.isDown && movingLeft == false && movingRight == false) {
+        if (player.x !== spawnerPositions[4]) { // Make sure player is not at far right of screen
+            movingRight = true;
+            player.x += 200;
+        }
+    }
+
+    // Reset movement capability when pressed key is lifted
+    if (movementKeys.left.isUp) {
+        movingLeft = false;
+    }
+    if (movementKeys.right.isUp) {
+        movingRight = false;
+    }
 }
+
 
 /**
  * If space is hit whilst the player and a beat overlap, this function is called.
@@ -155,6 +201,7 @@ function checkSpacebarInput(beat) {
     }
 }
 
+
 /**
  * Increases the score by (10 * score multiplier).
  * Then increases the multiplier by 0.2x if it is less then the cap which is 5.0x
@@ -168,6 +215,7 @@ function incrementScore() {
     scoreText.setText(`Score = ${score}`)
     multiplierText.setText(`Multiplier = ${scoreMultiplier}x`)
 }
+
 
 function beatSpawn() {
     // Creates the beat object, sets its capped velocity
@@ -187,18 +235,63 @@ function beatSpawn() {
     }
 }
 
+
 function beatRemover() {
     // Removes missed beats if they are off screen
     beatsGroup.children.each(function(beat) {
-        if (beat.x < -100) {
+        if (beat.y < -100) {
             beat.destroy();
+            resetMultiplier()
         };
     });
+}
+
+function resetMultiplier() {
+    scoreMultiplier = 1.0
+    multiplierText.setText(`Multiplier = ${scoreMultiplier}x`)
 }
 
 function sequenceComplete() {
     // When the sequence is over this runs and will eventually use a score to decide what to display
     beatSpawnerEvent.destroy();
-    this.add.image(400,300, 'gameFailed');
+    gameMusic.destroy()
+    // Determines which end screen to display based on the player's score.
+    if (score >= 1000) {
+        winScreen()
+    } else {
+        loseScreen()
+    }
 }
 ;
+
+// Displays if the player had at least 1000 score at game finish.
+function winScreen() {
+    player.visible = false;
+    scoreText.visible = false;
+    multiplierText.visible = false;
+    winImage.visible = true;
+    winText.visible = true;
+    finalScoreText.setText(`Final Score: ${score}`)
+    finalScoreText.visible = true;
+    restartText.visible = true;
+
+    document.addEventListener('mouseup', restartGame)
+}
+
+// Displays if the player had less than 1000 score at game finish.
+function loseScreen() {
+    player.visible = false;
+    scoreText.visible = false;
+    multiplierText.visible = false;
+    loseImage.visible = true;
+    loseText.visible = true;
+    finalScoreText.setText(`Final Score: ${score}`)
+    finalScoreText.visible = true;
+    restartText.visible = true;
+
+    document.addEventListener('mouseup', restartGame)
+}
+
+function restartGame() {
+    window.location.reload();
+}

@@ -45,6 +45,7 @@ var score = 0;
 
 
 function preload () {
+    // loads images
     this.load.image('sky', './assets/images/sky.png');
     this.load.image('beat', './assets/images/beat.png');
     this.load.image('player', './assets/images/temp-player-sprite.png')
@@ -52,8 +53,10 @@ function preload () {
     this.load.image('titleScreen', './assets/images/title-screen.png');
     this.load.image('winSprite', './assets/images/win-player-sprite.png')
     this.load.image('loseSprite', './assets/images/lose-player-sprite.png')
+
+    // loads audio
+    this.load.audio('gameMusic', './assets/audio/game-music.wav')
     this.load.audio('ding', './assets/sounds/ding.mp3')
- 
 }
 
 
@@ -63,6 +66,9 @@ function create () {
 
     // Create the group for beats
     beatsGroup = this.add.group();
+
+    // Create variable that stores the games music
+    gameMusic = this.sound.add('gameMusic')
 
     // Create the player sprite and remove gravity from it.
     player = this.physics.add.sprite(300, 150, 'player')
@@ -148,6 +154,9 @@ function startGame() {
     scoreText.visible = true
     multiplierText.visible = true
     // Start music here too
+    setTimeout(function() {
+        gameMusic.play()
+    }, 2000)
 }
 
 
@@ -240,6 +249,7 @@ function beatRemover() {
 function sequenceComplete() {
     // When the sequence is over this runs and will eventually use a score to decide what to display
     beatSpawnerEvent.destroy();
+    gameMusic.destroy()
     // Determines which end screen to display based on the player's score.
     if (score >= 1000) {
         winScreen()
@@ -259,6 +269,8 @@ function winScreen() {
     finalScoreText.setText(`Final Score: ${score}`)
     finalScoreText.visible = true;
     restartText.visible = true;
+
+    document.addEventListener('mouseup', restartGame)
 }
 
 // Displays if the player had less than 1000 score at game finish.
@@ -271,4 +283,10 @@ function loseScreen() {
     finalScoreText.setText(`Final Score: ${score}`)
     finalScoreText.visible = true;
     restartText.visible = true;
+
+    document.addEventListener('mouseup', restartGame)
+}
+
+function restartGame() {
+    window.location.reload();
 }

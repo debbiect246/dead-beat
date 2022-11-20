@@ -29,7 +29,7 @@ var beatsPerMillisecond = 60000 / beatsPerMin;
 var beatsPerBar = beatsPerMillisecond / notesPerBeat;
 var beatsGroup;
 // Sequence defines where the beats will spawn 1 to 4 are left to right, zero is no beat, on 4 notes per beat (default) 1,0,0,0 would be one note per beat)
-var sequence = [0,0,
+var sequence = [0,0, //Track off by 1/2 beat
     2,0,0,0, // Segment 1
     3,0,0,0,
     2,0,0,0,
@@ -326,6 +326,7 @@ function beatSpawn() {
         var beat = this.physics.add.sprite(xPos, 700,'beat'); // Adds the beat object to the game
         beat.setMaxVelocity(0 , 250);  // Object cannot go faster than this
         beat.setVelocityY(-250); // Object instantly goes this fast
+        beat.setScale(.75);
         beatsGroup.add(beat);  // Object added to a group that can be itterated over later for cleanup
     }
     currentNote++; // Moves to the next note in the sequence

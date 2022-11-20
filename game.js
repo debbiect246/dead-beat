@@ -6,7 +6,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: -200 },
+            gravity: { y: 0 },
             debug: false
         }
     },
@@ -38,6 +38,7 @@ var movingLeft = false;
 var movingRight = false;
 var spacePressed = false;
 var gameStarted = false;
+var gameOver = false;
 var titleScreen;
 // Multiplier determines how much the score is incremented for each beat hit accurately.
 var scoreMultiplier = 1.0;
@@ -57,6 +58,7 @@ function preload () {
     // loads audio
     this.load.audio('gameMusic', './assets/audio/game-music.wav')
     this.load.audio('ding', './assets/audio/ding.mp3')
+    this.load.audio('scream', './assets/audio/wilhelm.mp3')
 }
 
 
@@ -68,17 +70,20 @@ function create () {
     beatsGroup = this.add.group();
 
     // Create variable that stores the games music
-    gameMusic = this.sound.add('gameMusic')
+    gameMusic = this.sound.add('gameMusic');
+    scream = this.sound.add('scream');
+
 
     // Create the player sprite and remove gravity from it.
-    player = this.physics.add.sprite(300, 150, 'player')
-    player.setCollideWorldBounds(true)
-    player.body.allowGravity = false
+    player = this.physics.add.sprite(300, 150, 'player');
+    player.body.allowGravity = true;
+    player.body.gravity.y = 0;
+    player.setCollideWorldBounds(false);
     
     // Create variable that stores common key inputs
-    movementKeys = this.input.keyboard.createCursorKeys()
+    movementKeys = this.input.keyboard.createCursorKeys();
     movementKeys.space.on('up', function() {
-        spacePressed = false
+        spacePressed = false;
     })
 
     // Create an s key to start the game 
@@ -86,7 +91,7 @@ function create () {
 
     // Check for overlap between player and beat.
     this.physics.add.overlap(beatsGroup, player, function(beat) {
-        checkSpacebarInput(beat)
+        checkSpacebarInput(beat);
     })
 
     // Displays the current score and multiplier.
@@ -105,20 +110,20 @@ function create () {
     titleScreen.body.allowGravity = false;
 
     // Create end screen sprites and text and hide them for now.
-    winImage = this.add.sprite(400, 300, 'winSprite')
+    winImage = this.add.sprite(400, 300, 'winSprite');
     winImage.visible = false;
-    winText = this.add.text(40, 25, 'Congratulations, You Survived!', {fontSize: '40px', fill: '#000000'})
+    winText = this.add.text(40, 25, 'Congratulations, You Survived!', {fontSize: '40px', fill: '#000000'});
     winText.visible = false;
     
-    loseImage = this.add.sprite(400, 300, 'loseSprite')
+    loseImage = this.add.sprite(400, 300, 'loseSprite');
     loseImage.visible = false;
-    loseText = this.add.text(300, 25, 'Uh Oh...', {fontSize: '40px', fill: '#000000'})
+    loseText = this.add.text(300, 25, 'Uh Oh...', {fontSize: '40px', fill: '#000000'});
     loseText.visible = false;
     
-    finalScoreText = this.add.text(260, 80, 'Final Score: 0', {fontSize: '30px', fill: '#000000'})
-    finalScoreText.visible = false
-    restartText = this.add.text(260, 520, 'Click to Restart!', {fontSize: '30px', fill: '#000000'})
-    restartText.visible = false
+    finalScoreText = this.add.text(260, 80, 'Final Score: 0', {fontSize: '30px', fill: '#000000'});
+    finalScoreText.visible = false;
+    restartText = this.add.text(260, 520, 'Click to Restart!', {fontSize: '30px', fill: '#000000'});
+    restartText.visible = false;
     
 }
 
@@ -151,11 +156,11 @@ function startGame() {
     beatSpawnerEvent.paused = false;
     beatRemoverEvent.paused = false;
     // Displays score text once game is running.
-    scoreText.visible = true
-    multiplierText.visible = true
+    scoreText.visible = true;
+    multiplierText.visible = true;
     // Start music after delay to sync with beats
     setTimeout(function() {
-        gameMusic.play()
+        gameMusic.play();
     }, 2000)
 }
 
@@ -227,10 +232,12 @@ function beatSpawn() {
         beat.setMaxVelocity(0 , 250);  // Object cannot go faster than this
         beat.setVelocityY(-250); // Object instantly goes this fast
         beatsGroup.add(beat);  // Object added to a group that can be itterated over later for cleanup
+        beat.gravity = -300;
     }
     currentNote++; // Moves to the next note in the sequence
     
-    if (currentNote >= sequence.length) {
+    if (currentNote >= sequence.length && gameOver == false) {
+        gameOver = true;
         timedEvent = this.time.delayedCall(2500, sequenceComplete, [], this);
     }
 }
@@ -246,23 +253,29 @@ function beatRemover() {
     });
 }
 
+
 function resetMultiplier() {
     scoreMultiplier = 1.0
     multiplierText.setText(`Multiplier = ${scoreMultiplier}x`)
 }
 
+
 function sequenceComplete() {
     // When the sequence is over this runs and will eventually use a score to decide what to display
     beatSpawnerEvent.destroy();
-    gameMusic.destroy()
+
     // Determines which end screen to display based on the player's score.
     if (score >= 1000) {
         winScreen()
     } else {
-        loseScreen()
+        console.log("game over here");
+        player.body.gravity.y = 600;  // Let player fall off screen
+        scream.play();
+
+        this.time.addEvent({ delay: 1000, callback: loseScreen, callbackScope: this, loop: false }); // Give time before loose screen activated
     }
 }
-;
+
 
 // Displays if the player had at least 1000 score at game finish.
 function winScreen() {
@@ -280,7 +293,7 @@ function winScreen() {
 
 // Displays if the player had less than 1000 score at game finish.
 function loseScreen() {
-    player.visible = false;
+    //player.visible = false;
     scoreText.visible = false;
     multiplierText.visible = false;
     loseImage.visible = true;

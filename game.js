@@ -269,6 +269,8 @@ function winScreen() {
     finalScoreText.setText(`Final Score: ${score}`)
     finalScoreText.visible = true;
     restartText.visible = true;
+
+    document.addEventListener('mouseup', restartGame)
 }
 
 // Displays if the player had less than 1000 score at game finish.
@@ -281,4 +283,10 @@ function loseScreen() {
     finalScoreText.setText(`Final Score: ${score}`)
     finalScoreText.visible = true;
     restartText.visible = true;
+
+    document.addEventListener('mouseup', restartGame)
+}
+
+function restartGame() {
+    window.location.reload();
 }

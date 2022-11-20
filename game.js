@@ -52,6 +52,8 @@ function preload () {
     this.load.image('titleScreen', './assets/images/title-screen.png');
     this.load.image('winSprite', './assets/images/win-player-sprite.png')
     this.load.image('loseSprite', './assets/images/lose-player-sprite.png')
+    this.load.audio('ding', './assets/sounds/ding.mp3')
+ 
 }
 
 
@@ -73,7 +75,7 @@ function create () {
         spacePressed = false
     })
 
-    // Create an s key to start the game @Deborah change this to whatever
+    // Create an s key to start the game 
     keys = this.input.keyboard.addKeys("S");
 
     // Check for overlap between player and beat.
@@ -137,7 +139,7 @@ function update () {
 function startGame() {
     gameStarted = true;
     allowControl = true;
-    // @Deborah, destroy Title screen or animate up from here
+    // destroy Title screen or animate up from here
     titleScreen.body.allowGravity = true;
     titleScreen.body.gravity.y = -800;
     beatSpawnerEvent.paused = false;

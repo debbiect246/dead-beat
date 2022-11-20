@@ -29,7 +29,91 @@ var beatsPerMillisecond = 60000 / beatsPerMin;
 var beatsPerBar = beatsPerMillisecond / notesPerBeat;
 var beatsGroup;
 // Sequence defines where the beats will spawn 1 to 4 are left to right, zero is no beat, on 4 notes per beat (default) 1,0,0,0 would be one note per beat)
-var sequence = [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1]
+var sequence = [0,0, //Track off by 1/2 beat
+    2,0,0,0, // Segment 1
+    3,0,0,0,
+    2,0,0,0,
+    3,0,0,0,
+    2,0,0,0,
+    1,0,0,0,
+    2,0,0,0,
+    3,0,0,0,
+    4,0,0,0,
+    3,3,0,0,
+    0,0,3,3,
+    3,3,3,3,
+    3,3,0,2,
+    2,2,2,2,
+    2,2,2,0, // Segment 2
+    0,0,0,0,
+    1,0,1,0,
+    3,0,0,0,
+    2,0,2,0,
+    4,0,0,0,
+    3,0,3,0,
+    2,0,0,0,
+    1,0,1,0,
+    2,0,0,0,
+    3,0,3,0,
+    0,0,0,0,
+    0,0,4,0,
+    4,0,4,0,
+    4,0,3,0,
+    4,0,3,0,
+    4,0,0,0, // Segment 2
+    3,3,0,0,
+    2,0,0,0,
+    3,3,0,0,
+    2,0,0,0,
+    3,3,0,0,
+    2,0,0,0, // Slowdown
+    1,0,0,0,
+    2,0,0,0,
+    3,0,0,0,
+    4,4,0,0,
+    3,0,0,0,
+    2,0,0,0,
+    1,0,1,0,
+    2,0,2,0,
+    0,0,1,1, //Drums x6
+    1,1,1,1,
+    0,0,0,0, //break
+    0,0,0,0,
+    2,0,3,0,
+    2,0,3,0,
+    0,0,0,0,
+    2,0,1,0,
+    2,0,1,0,
+    0,0,0,0,
+    4,0,0,0,
+    4,0,0,0,
+    0,0,0,0,
+    0,0,2,2, // Drums intense
+    2,2,2,2,
+    2,2,1,1,
+    1,1,1,1,
+    1,1,0,0,
+    2,0,0,0,
+    2,0,2,0,
+    3,0,0,0,
+    3,0,3,0,
+    2,0,0,0,
+    2,0,2,0,
+    0,0,0,0,
+    3,0,4,0, // Intense
+    3,0,4,0,
+    3,0,2,0,
+    3,0,2,0,
+    1,0,2,0,
+    1,0,2,0,
+    1,0,2,0,
+    3,0,4,0,
+    3,0,2,0,
+    0,0,0,0,
+    1,1,0,0,
+    2,2,0,0,
+    3,0,4,0,]
+
 var currentNote = 0; // Where we currently are in the sequence
 var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
 var beatSpawnerEvent;
@@ -175,7 +259,7 @@ function startGame() {
     // Start music after delay to sync with beats
     setTimeout(function() {
         gameMusic.play();
-    }, 2000)
+    }, 2010)
 }
 
 
@@ -208,7 +292,7 @@ function handleMovemet() {
 /**
  * If space is hit whilst the player and a beat overlap, this function is called.
  * Triggers the increment score function and destroys the current beat.
- * @param beat - Contains the current beat that is overlapping the player.
+ * param beat - Contains the current beat that is overlapping the player.
  */
 function checkSpacebarInput(beat) {
     if (movementKeys.space.isDown) {
@@ -246,8 +330,8 @@ function beatSpawn() {
         var beat = this.physics.add.sprite(xPos, 700,'beat'); // Adds the beat object to the game
         beat.setMaxVelocity(0 , 250);  // Object cannot go faster than this
         beat.setVelocityY(-250); // Object instantly goes this fast
+        beat.setScale(.75);
         beatsGroup.add(beat);  // Object added to a group that can be itterated over later for cleanup
-        beat.gravity = -300;
     }
     currentNote++; // Moves to the next note in the sequence
     

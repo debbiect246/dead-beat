@@ -50,6 +50,7 @@ function preload () {
     this.load.image('player', './assets/images/temp-player-sprite.png')
     this.load.image('gameFailed', './assets/images/game-failed.png');
     this.load.image('titleScreen', './assets/images/title-screen.png');
+    this.load.image('winSprite', './assets/images/win-player-sprite.png')
 }
 
 
@@ -93,6 +94,17 @@ function create () {
     // Title Screens
     titleScreen = this.physics.add.sprite(400, 300, 'titleScreen');
     titleScreen.body.allowGravity = false;
+
+    // Create end screen sprites and text and hide them for now.
+    winImage = this.add.sprite(400, 300, 'winSprite')
+    winImage.visible = false;
+    winText = this.add.text(40, 25, 'Congratulations, You Survived!', {fontSize: '40px', fill: '#000000'})
+    winText.visible = false
+    finalScoreText = this.add.text(260, 80, `Final Score: ${score}`, {fontSize: '30px', fill: '#000000'})
+    finalScoreText.visible = false
+    restartText = this.add.text(260, 520, 'Click to Restart!', {fontSize: '30px', fill: '#000000'})
+    restartText.visible = false
+    
 }
 
 
@@ -219,6 +231,21 @@ function beatRemover() {
 function sequenceComplete() {
     // When the sequence is over this runs and will eventually use a score to decide what to display
     beatSpawnerEvent.destroy();
-    this.add.image(400,300, 'gameFailed');
+    // Determines which end screen to display based on the player's score.
+    if (score > 1000) {
+        winScreen()
+    } else {
+        loseScreen()
+    }
 }
 ;
+
+function winScreen() {
+    player.visible = false;
+    winImage.visible = true;
+    scoreText.visible = false;
+    multiplierText.visible = false;
+    winText.visible = true;
+    finalScoreText.visible = true;
+    restartText.visible = true;
+}

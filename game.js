@@ -56,7 +56,7 @@ function preload () {
 
     // loads audio
     this.load.audio('gameMusic', './assets/audio/game-music.wav')
-    this.load.audio('ding', './assets/sounds/ding.mp3')
+    this.load.audio('ding', './assets/audio/ding.mp3')
 }
 
 
@@ -98,7 +98,7 @@ function create () {
     // Create an initially paused timed event that will spawn an object for each note, defined by BPM and notesPerBeat
     beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true, paused: true });
     // Timed event runs once a second to remove missed beats
-    beatRemoverEvent = this.time.addEvent({ delay: 1000, callback: beatRemover, callbackScope: this, loop: true, paused: true });
+    beatRemoverEvent = this.time.addEvent({ delay: 500, callback: beatRemover, callbackScope: this, loop: true, paused: true });
 
     // Title Screens
     titleScreen = this.physics.add.sprite(400, 300, 'titleScreen');
@@ -153,7 +153,7 @@ function startGame() {
     // Displays score text once game is running.
     scoreText.visible = true
     multiplierText.visible = true
-    // Start music here too
+    // Start music after delay to sync with beats
     setTimeout(function() {
         gameMusic.play()
     }, 2000)
@@ -239,12 +239,17 @@ function beatSpawn() {
 function beatRemover() {
     // Removes missed beats if they are off screen
     beatsGroup.children.each(function(beat) {
-        if (beat.x < -100) {
+        if (beat.y < -100) {
             beat.destroy();
+            resetMultiplier()
         };
     });
 }
 
+function resetMultiplier() {
+    scoreMultiplier = 1.0
+    multiplierText.setText(`Multiplier = ${scoreMultiplier}x`)
+}
 
 function sequenceComplete() {
     // When the sequence is over this runs and will eventually use a score to decide what to display

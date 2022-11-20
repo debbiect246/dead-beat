@@ -6,6 +6,7 @@
 ## How to play
 
 * Arrow keys - move left and right
+* Spacebar - Collect parachute material
 
 ## Setup
 

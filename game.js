@@ -156,6 +156,9 @@ function create () {
     // Create the group for beats
     beatsGroup = this.add.group();
 
+    //create ding sound when player grabs patch
+    ding = this.sound.add('ding');
+
     // Create variable that stores the games music
     gameMusic = this.sound.add('gameMusic');
     scream = this.sound.add('scream');
@@ -299,6 +302,7 @@ function checkSpacebarInput(beat) {
         if (spacePressed === false) {
             beat.destroy()
             incrementScore() 
+            ding.play()
             spacePressed = true
         }
     }

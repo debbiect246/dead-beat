@@ -79,6 +79,7 @@ function create () {
     player.body.allowGravity = true;
     player.body.gravity.y = 0;
     player.setCollideWorldBounds(false);
+    player.setSize(20, 5)
     
     // Create variable that stores common key inputs
     movementKeys = this.input.keyboard.createCursorKeys();

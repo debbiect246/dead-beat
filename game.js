@@ -30,7 +30,7 @@ var beatsPerBar = beatsPerMillisecond / notesPerBeat;
 var beatsGroup;
 // Sequence defines where the beats will spawn 1 to 4 are left to right, zero is no beat, on 4 notes per beat (default) 1,0,0,0 would be one note per beat)
 var sequence = [0,0, //Track off by 1/2 beat
-    2,0,0,0, // Segment 1
+    0,0,0,0, // Segment 1
     3,0,0,0,
     2,0,0,0,
     3,0,0,0,
@@ -145,6 +145,7 @@ function preload () {
     this.load.audio('gameMusic', './assets/audio/track-1.mp3');
     this.load.audio('ding', './assets/audio/ding.mp3');
     this.load.audio('scream', './assets/audio/wilhelm.mp3');
+    this.load.audio('wind', './assets/audio/wind-noise.mp3');
 }
 
 
@@ -158,6 +159,8 @@ function create () {
     // Create variable that stores the games music
     gameMusic = this.sound.add('gameMusic');
     scream = this.sound.add('scream');
+    wind = this.sound.add('wind', {volume: 1.5});
+    wind.play();
 
     // Create player animation
     this.anims.create({
@@ -339,7 +342,7 @@ function beatSpawn() {
 
 
 function beatRemover() {
-    // Removes missed beats if they are off screen
+    // Removes missed beats if they are off screen (on a timer)
     beatsGroup.children.each(function(beat) {
         if (beat.y < -100) {
             beat.destroy();
@@ -372,8 +375,8 @@ function sequenceComplete() {
 }
 
 
-// Displays if the player had at least 1000 score at game finish.
 function winScreen() {
+    // Displays if the player had at least 1000 score at game finish.
     player.visible = false;
     scoreText.visible = false;
     multiplierText.visible = false;
@@ -386,9 +389,9 @@ function winScreen() {
     document.addEventListener('mouseup', restartGame)
 }
 
-// Displays if the player had less than 1000 score at game finish.
+
 function loseScreen() {
-    //player.visible = false;
+    // Displays if the player had less than 1000 score at game finish.
     scoreText.visible = false;
     multiplierText.visible = false;
     loseImage.visible = true;

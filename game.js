@@ -33,8 +33,9 @@ var sequence = [1,0,0,0,2,0,0,0,3,0,0,0,4,0,0,0,1,0,1,0,2,0,2,0,3,0,3,0,4,0,4,0,
 var currentNote = 0; // Where we currently are in the sequence
 var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
 var beatSpawnerEvent;
-var activeMovement = false;
-var continueMoving = false;
+var allowControl = true;
+var movingLeft = false;
+var movingRight = false;
 var spacePressed = false;
 // Multiplier determines how much the score is incremented for each beat hit accurately.
 var scoreMultiplier = 1.0;
@@ -90,55 +91,38 @@ function update () {
     // Tells the sky to scroll at a specific speed
     sky.tilePositionY += 0.2;
 
-    // Move the player on left and right key inputs
-    if (movementKeys.left.isDown) {
-        if (player.x !== 100 && activeMovement === false) {
-            dashLeft()
-        }
-    } else if (movementKeys.right.isDown) {
-        if (player.x !== 700 && activeMovement === false) {
-            dashRight()
-        }
+    // Player movement
+    if (allowControl == true) {
+        handleMovemet()
     }
 }
 
-/**
- * Checks the current player position and creates a target that is 200px to the left of that.
- * Prevents the user from dashing again for a a short period once the target destination is reached.
- */
-function dashLeft() {
-    activeMovement = true
-    continueMoving = true
-    target = (player.x - 200)
-    while (continueMoving === true) {
-        player.x -= 1
-        if (player.x === target) {
-            continueMoving = false
+
+// Handle player movement
+function handleMovemet() {
+    if (movementKeys.left.isDown && movingLeft == false && movingRight == false) {
+        if (player.x !== spawnerPositions[1]) { // Make sure player is not at far left of screen
+            movingLeft = true;
+            player.x -= 200;
         }
     }
-    dashCooldown = setTimeout(function() {
-        activeMovement = false
-    }, 100)
+    
+    if (movementKeys.right.isDown && movingLeft == false && movingRight == false) {
+        if (player.x !== spawnerPositions[4]) { // Make sure player is not at far right of screen
+            movingRight = true;
+            player.x += 200;
+        }
+    }
+
+    // Reset movement capability when pressed key is lifted
+    if (movementKeys.left.isUp) {
+        movingLeft = false;
+    }
+    if (movementKeys.right.isUp) {
+        movingRight = false;
+    }
 }
 
-/**
- * Checks the current player position and creates a target that is 200px to the right of that.
- * Prevents the user from dashing again for a a short period once the target destination is reached.
- */
-function dashRight() {
-    activeMovement = true
-    continueMoving = true
-    target = (player.x + 200)
-    while (continueMoving === true) {
-        player.x += 1
-        if (player.x === target) {
-            continueMoving = false
-        }
-    }
-    dashCooldown = setTimeout(function() {
-        activeMovement = false
-    }, 100)
-}
 
 /**
  * If space is hit whilst the player and a beat overlap, this function is called.
@@ -155,6 +139,7 @@ function checkSpacebarInput(beat) {
     }
 }
 
+
 /**
  * Increases the score by (10 * score multiplier).
  * Then increases the multiplier by 0.2x if it is less then the cap which is 5.0x
@@ -168,6 +153,7 @@ function incrementScore() {
     scoreText.setText(`Score = ${score}`)
     multiplierText.setText(`Multiplier = ${scoreMultiplier}x`)
 }
+
 
 function beatSpawn() {
     // Creates the beat object, sets its capped velocity
@@ -187,6 +173,7 @@ function beatSpawn() {
     }
 }
 
+
 function beatRemover() {
     // Removes missed beats if they are off screen
     beatsGroup.children.each(function(beat) {
@@ -195,6 +182,7 @@ function beatRemover() {
         };
     });
 }
+
 
 function sequenceComplete() {
     // When the sequence is over this runs and will eventually use a score to decide what to display

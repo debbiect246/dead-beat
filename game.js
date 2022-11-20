@@ -33,10 +33,12 @@ var sequence = [1,0,0,0,2,0,0,0,3,0,0,0,4,0,0,0,1,0,1,0,2,0,2,0,3,0,3,0,4,0,4,0,
 var currentNote = 0; // Where we currently are in the sequence
 var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
 var beatSpawnerEvent;
-var allowControl = true;
+var allowControl = false;
 var movingLeft = false;
 var movingRight = false;
 var spacePressed = false;
+var gameStarted = false;
+var titleScreen;
 // Multiplier determines how much the score is incremented for each beat hit accurately.
 var scoreMultiplier = 1.0;
 var score = 0;
@@ -45,11 +47,9 @@ var score = 0;
 function preload () {
     this.load.image('sky', './assets/images/sky.png');
     this.load.image('beat', './assets/images/beat.png');
-
     this.load.image('player', './assets/images/temp-player-sprite.png')
-
     this.load.image('gameFailed', './assets/images/game-failed.png');
-
+    this.load.image('titleScreen', './assets/images/title-screen.png');
 }
 
 
@@ -59,11 +59,6 @@ function create () {
 
     // Create the group for beats
     beatsGroup = this.add.group();
-
-    // Create a timed event that will spawn an object for each note, defined by BPM and notesPerBeat
-    beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true });
-    // Timed event runs once a second to remove missed beats
-    beatRemoverEvent = this.time.addEvent({ delay: 1000, callback: beatRemover, callbackScope: this, loop: true });
 
     // Create the player sprite and remove gravity from it.
     player = this.physics.add.sprite(300, 150, 'player')
@@ -76,6 +71,9 @@ function create () {
         spacePressed = false
     })
 
+    // Create an s key to start the game @Deborah change this to whatever
+    keys = this.input.keyboard.addKeys("S");
+
     // Check for overlap between player and beat.
     this.physics.add.overlap(beatsGroup, player, function(beat) {
         checkSpacebarInput(beat)
@@ -84,6 +82,15 @@ function create () {
     // Displays the current score and multiplier.
     scoreText = this.add.text(100, 25, 'Score = 0', {fontSize: '20px', fill: '#000000'})
     multiplierText = this.add.text(100, 50, 'Multiplier = 1.0x', {fontSize: '20px', fill: '#000000'})
+
+    // Create an initially paused timed event that will spawn an object for each note, defined by BPM and notesPerBeat
+    beatSpawnerEvent = this.time.addEvent({ delay: beatsPerBar, callback: beatSpawn, callbackScope: this, loop: true, paused: true });
+    // Timed event runs once a second to remove missed beats
+    beatRemoverEvent = this.time.addEvent({ delay: 1000, callback: beatRemover, callbackScope: this, loop: true, paused: true });
+
+    // Title Screens
+    titleScreen = this.physics.add.sprite(400, 300, 'titleScreen');
+    titleScreen.body.allowGravity = false;
 }
 
 
@@ -93,8 +100,28 @@ function update () {
 
     // Player movement
     if (allowControl == true) {
-        handleMovemet()
+        handleMovemet();
     }
+
+    if (keys.S.isDown) {
+        if (gameStarted == false) {
+            gameStarted = true;
+            startGame();
+        }
+    }
+}
+
+
+//start game
+function startGame() {
+    gameStarted = true;
+    allowControl = true;
+    // @Deborah, destroy Title screen or animate up from here
+    titleScreen.body.allowGravity = true;
+    titleScreen.body.gravity.y = -800;
+    beatSpawnerEvent.paused = false;
+    beatRemoverEvent.paused = false;
+    // Start music here too
 }
 
 

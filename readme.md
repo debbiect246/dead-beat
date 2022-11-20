@@ -71,6 +71,7 @@
 
 * [freepik](https://www.freepik.com/search?color=orange&format=search&query=patches&type=icon)
 * [freeSFX](https://freesfx.co.uk/)
+* [Music](https://soundcloud.com/alexproductionsmusic/energetic-rock-vlog-music-by-efficsounds-alex-productions-free-music-hiking-free-music)
 
 ##Linked in details of team members
 * [Kelvin Ward](https://www.linkedin.com/in/kelvinhere/)

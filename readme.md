@@ -6,8 +6,6 @@
 ## How to play
 
 * Arrow keys - move left and right
-* Space bar - shoot
-* Destroy all aliens to progress
 
 ## Setup
 
@@ -15,7 +13,7 @@
 
 [Click here to play!](https://debbiect246.github.io/dead-beat/)
 
-### How to install
+### Development Process
 
 1. Double click setup.exe
 2. Follow onscreen instructions
@@ -28,4 +26,4 @@
 * [Kelvin Ward](https://www.linkedin.com/in/kelvinhere/)
 * [Shaun Buck](https://www.linkedin.com/in/shaun-buck-749093221/)
 * [Debbie Thompson](//www.linkedin.com/in/debbie-thompson-1baa4733/)
-* [etc. etc.](https://www.example.com)
+* [Cameron Cove-Crichton] (//www.linkedin.com/in/cameron-cove-crichton-8aa332198/)

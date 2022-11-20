@@ -49,16 +49,18 @@ function preload () {
     // loads images
     this.load.image('sky', './assets/images/sky.png');
     this.load.image('beat', './assets/images/beat.png');
-    this.load.image('player', './assets/images/temp-player-sprite.png')
     this.load.image('gameFailed', './assets/images/game-failed.png');
     this.load.image('titleScreen', './assets/images/title-screen.png');
-    this.load.image('winSprite', './assets/images/win-player-sprite.png')
-    this.load.image('loseSprite', './assets/images/lose-player-sprite.png')
+    this.load.image('winSprite', './assets/images/win-player-sprite.png');
+    this.load.image('loseSprite', './assets/images/lose-player-sprite.png');
+    
+    // load sprites
+    this.load.spritesheet('player', './assets/images/player-spritesheet.png', { frameWidth: 128, frameHeight: 128 });
 
     // loads audio
-    this.load.audio('gameMusic', './assets/audio/track-1.mp3')
-    this.load.audio('ding', './assets/audio/ding.mp3')
-    this.load.audio('scream', './assets/audio/wilhelm.mp3')
+    this.load.audio('gameMusic', './assets/audio/track-1.mp3');
+    this.load.audio('ding', './assets/audio/ding.mp3');
+    this.load.audio('scream', './assets/audio/wilhelm.mp3');
 }
 
 
@@ -73,6 +75,12 @@ function create () {
     gameMusic = this.sound.add('gameMusic');
     scream = this.sound.add('scream');
 
+    // Create player animation
+    this.anims.create({
+        key: 'idle',
+        frames: this.anims.generateFrameNumbers('player', { start: 0, end: 2 }),
+        frameRate: 5
+    });
 
     // Create the player sprite and remove gravity from it.
     player = this.physics.add.sprite(300, 150, 'player');
@@ -80,6 +88,8 @@ function create () {
     player.body.gravity.y = 0;
     player.setCollideWorldBounds(false);
     player.setSize(20, 5)
+
+    player.play({ key: 'idle', repeat: -1 });
     
     // Create variable that stores common key inputs
     movementKeys = this.input.keyboard.createCursorKeys();

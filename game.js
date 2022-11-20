@@ -51,6 +51,7 @@ function preload () {
     this.load.image('gameFailed', './assets/images/game-failed.png');
     this.load.image('titleScreen', './assets/images/title-screen.png');
     this.load.image('winSprite', './assets/images/win-player-sprite.png')
+    this.load.image('loseSprite', './assets/images/lose-player-sprite.png')
 }
 
 
@@ -99,8 +100,14 @@ function create () {
     winImage = this.add.sprite(400, 300, 'winSprite')
     winImage.visible = false;
     winText = this.add.text(40, 25, 'Congratulations, You Survived!', {fontSize: '40px', fill: '#000000'})
-    winText.visible = false
-    finalScoreText = this.add.text(260, 80, `Final Score: ${score}`, {fontSize: '30px', fill: '#000000'})
+    winText.visible = false;
+    
+    loseImage = this.add.sprite(400, 300, 'loseSprite')
+    loseImage.visible = false;
+    loseText = this.add.text(300, 25, 'Uh Oh...', {fontSize: '40px', fill: '#000000'})
+    loseText.visible = false;
+    
+    finalScoreText = this.add.text(260, 80, 'Final Score: 0', {fontSize: '30px', fill: '#000000'})
     finalScoreText.visible = false
     restartText = this.add.text(260, 520, 'Click to Restart!', {fontSize: '30px', fill: '#000000'})
     restartText.visible = false
@@ -232,7 +239,7 @@ function sequenceComplete() {
     // When the sequence is over this runs and will eventually use a score to decide what to display
     beatSpawnerEvent.destroy();
     // Determines which end screen to display based on the player's score.
-    if (score > 1000) {
+    if (score >= 1000) {
         winScreen()
     } else {
         loseScreen()
@@ -240,12 +247,26 @@ function sequenceComplete() {
 }
 ;
 
+// Displays if the player had at least 1000 score at game finish.
 function winScreen() {
     player.visible = false;
-    winImage.visible = true;
     scoreText.visible = false;
     multiplierText.visible = false;
+    winImage.visible = true;
     winText.visible = true;
+    finalScoreText.setText(`Final Score: ${score}`)
+    finalScoreText.visible = true;
+    restartText.visible = true;
+}
+
+// Displays if the player had less than 1000 score at game finish.
+function loseScreen() {
+    player.visible = false;
+    scoreText.visible = false;
+    multiplierText.visible = false;
+    loseImage.visible = true;
+    loseText.visible = true;
+    finalScoreText.setText(`Final Score: ${score}`)
     finalScoreText.visible = true;
     restartText.visible = true;
 }

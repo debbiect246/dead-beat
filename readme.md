@@ -15,6 +15,7 @@
 
 [Click here to play!](https://debbiect246.github.io/dead-beat/)
 
+
 ### Development
 
 ## Game
@@ -63,6 +64,7 @@
 -   When the sequence is over this runs and will eventually use a score to decide what to display
 
 
+
 ## Credits
 
 * [freepik](https://www.freepik.com/search?color=orange&format=search&query=patches&type=icon)
@@ -73,3 +75,4 @@
 * [Shaun Buck](https://www.linkedin.com/in/shaun-buck-749093221/)
 * [Debbie Thompson](//www.linkedin.com/in/debbie-thompson-1baa4733/)
 * [Cameron Cove-Crichton](https://www.linkedin.com/in/cameron-cove-crichton-8aa332198/)
+

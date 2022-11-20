@@ -1,5 +1,5 @@
 # 🎸 **Dead-beat** 👽 
-## *The world of music is under attack!!*
+## *Help! Our dead-beat sprite is on a rhythm fueled collision course with the earth. Move dead-beat to the groove of the music, and catch as many parachute material patches as he falls through the rhythm of the sky*
 
 ![image info](./screenshot.png)
 
@@ -65,7 +65,6 @@
 
 ## Credits
 
-* [Be sure to credit any assets that are not yours](https://www.example.com)
 * [freepik](https://www.freepik.com/search?color=orange&format=search&query=patches&type=icon)
 * [freeSFX](https://freesfx.co.uk/)
 
@@ -74,4 +73,3 @@
 * [Shaun Buck](https://www.linkedin.com/in/shaun-buck-749093221/)
 * [Debbie Thompson](//www.linkedin.com/in/debbie-thompson-1baa4733/)
 * [Cameron Cove-Crichton](https://www.linkedin.com/in/cameron-cove-crichton-8aa332198/)
-* [etc. etc.](https://www.example.com)

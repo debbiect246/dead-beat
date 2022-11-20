@@ -1,7 +1,9 @@
 # 🎸 **Dead-beat** 👽 
 ## *Help! Our dead-beat sprite is on a rhythm fueled collision course with the earth. Move dead-beat to the groove of the music, and catch as many parachute material patches as he falls through the rhythm of the sky*
 
-![image info](./screenshot.png)
+## Wireframes for the game
+
+![wireframes](wireframes/dead-beat-wireframes.pdf)
 
 ## How to play
 

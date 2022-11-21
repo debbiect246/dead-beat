@@ -206,8 +206,8 @@ function create () {
     })
 
     // Displays the current score and multiplier.
-    scoreText = this.add.text(100, 25, 'Score = 0', {fontSize: '20px', fill: '#000000'})
-    multiplierText = this.add.text(100, 50, 'Multiplier = 1.0x', {fontSize: '20px', fill: '#000000'})
+    scoreText = this.add.text(25, 25, 'Score 0', {fontSize: '20px', fill: '#000000'})
+    multiplierText = this.add.text(25, 50, '1.0x', {fontSize: '20px', fill: '#000000'})
     scoreText.visible = false
     multiplierText.visible = false
 
@@ -330,8 +330,8 @@ function incrementScore() {
     if (scoreMultiplier < 5.0) {
         scoreMultiplier = (scoreMultiplier * 10 + 2) / 10 
     }
-    scoreText.setText(`Score = ${score}`)
-    multiplierText.setText(`Multiplier = ${scoreMultiplier}x`)
+    scoreText.setText(`Score ${score}`)
+    multiplierText.setText(`${scoreMultiplier}x`)
 }
 
 
@@ -397,7 +397,8 @@ function sequenceComplete() {
 
 function winScreen() {
     // Displays if the player had at least 1000 score at game finish.
-    player.visible = false;
+    //player.visible = false;
+    player.body.gravity.y = -600;
     scoreText.visible = false;
     multiplierText.visible = false;
     winImage.visible = true;

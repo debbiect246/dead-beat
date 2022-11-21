@@ -114,25 +114,32 @@ var sequence = [0,0, //Track off by 1/2 beat
     2,2,0,0,
     3,0,4,0,]
 
-var currentNote = 0; // Where we currently are in the sequence
-var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
-var beatSpawnerEvent;
-var allowControl = false;
-var movingLeft = false;
-var movingRight = false;
-var spacePressed = false;
-var gameStarted = false;
-var gameOver = false;
+    var currentNote = 0; // Where we currently are in the sequence
+    var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
+    var beatSpawnerEvent;
+    var allowControl = false;
+    var movingLeft = false;
+    var movingRight = false;
+    var spacePressed = false;
+    var gameStarted = false;
+    var gameOver = false;
 var titleScreen;
 // Multiplier determines how much the score is incremented for each beat hit accurately.
 var scoreMultiplier = 1.0;
 var score = 0;
+var totalBeats = 0;
+var beatsCollected = 0;
+var beatsToWin = 0;
+var cloudGroup;
+var cloudDelay = 1000;
 
 
 function preload () {
     // loads images
     this.load.image('sky', './assets/images/sky.png');
+    this.load.image('backgroundClouds', './assets/images/background-clouds.png');
     this.load.image('beat', './assets/images/beat.png');
+    this.load.image('cloud', './assets/images/single-cloud.png');
     this.load.image('gameFailed', './assets/images/game-failed.png');
     this.load.image('titleScreen', './assets/images/title-screen.png');
     this.load.image('winSprite', './assets/images/win-player-sprite.png');
@@ -152,12 +159,15 @@ function preload () {
 function create () {
     // Sky image (added as tileSprite to access the scrolling method)
     sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
+    backgroundClouds = this.add.tileSprite(400, 300, 800, 600, 'backgroundClouds');
+    // Creates cloud generator
+    cloudGroup = this.add.group();
+    cloudGenerator = this.time.addEvent({ delay: cloudDelay, callback: makeCloud, callbackScope: this, loop: true, paused: false });
 
     // Create the group for beats
     beatsGroup = this.add.group();
-
-    //create ding sound when player grabs patch
-    ding = this.sound.add('ding');
+    sequence.forEach(countTotalBeats);
+    beatsToWin = Math.floor(totalBeats * 0.75);
 
     // Create variable that stores the games music
     gameMusic = this.sound.add('gameMusic');
@@ -232,6 +242,7 @@ function create () {
 function update () {
     // Tells the sky to scroll at a specific speed
     sky.tilePositionY += 0.2;
+    backgroundClouds.tilePositionY += 0.4;
 
     // Player movement
     if (allowControl == true) {
@@ -300,10 +311,10 @@ function handleMovemet() {
 function checkSpacebarInput(beat) {
     if (movementKeys.space.isDown) {
         if (spacePressed === false) {
-            beat.destroy()
-            incrementScore() 
-            ding.play()
-            spacePressed = true
+            beat.destroy();
+            incrementScore();
+            beatsCollected++;
+            spacePressed = true;
         }
     }
 }
@@ -353,6 +364,13 @@ function beatRemover() {
             resetMultiplier()
         };
     });
+
+    // Removes Clouds
+    cloudGroup.children.each(function(cloud) {
+        if (cloud.y < -300) {
+            cloud.destroy();
+        };
+    });
 }
 
 
@@ -367,13 +385,11 @@ function sequenceComplete() {
     beatSpawnerEvent.destroy();
 
     // Determines which end screen to display based on the player's score.
-    if (score >= 1000) {
+    if (beatsCollected >= beatsToWin) {
         winScreen()
     } else {
-        console.log("game over here");
         player.body.gravity.y = 600;  // Let player fall off screen
         scream.play();
-
         this.time.addEvent({ delay: 1000, callback: loseScreen, callbackScope: this, loop: false }); // Give time before loose screen activated
     }
 }
@@ -409,4 +425,29 @@ function loseScreen() {
 
 function restartGame() {
     window.location.reload();
+}
+
+function countTotalBeats(ele) {
+    if(ele != 0) {
+        totalBeats++;
+    }
+}
+
+function makeCloud() {
+    // Find position
+    position = Phaser.Math.Between(0,800);
+    speed = Phaser.Math.Between(-350,-2000);
+    size = Phaser.Math.Between(1.1,2.5);
+
+    // Make Cloud
+    var newCloud = this.physics.add.sprite(position, 1500,'cloud');
+    newCloud.allowGravity = false;
+    newCloud.setVelocityY(speed);
+    newCloud.setVelocityX(0);
+    newCloud.setMaxVelocity(500); 
+    newCloud.setScale(size);
+    newCloud.alpha = 0.3;
+    cloudGroup.add(newCloud);
+    // Change function fire time randomly
+    cloudDelay = Phaser.Math.Between(250,1500)
 }

@@ -8,6 +8,12 @@
 ![Win wireframe](./wireframes/dead-beat-win-wireframe.png)
 ![Perfect win wireframe](./wireframes/dead-beat-win100-wireframe.png)
 
+## Technologies Used
+
+- HTML5
+- Javascript
+- Phaser.js
+
 ## How to play
 
 * Arrow keys - move left and right

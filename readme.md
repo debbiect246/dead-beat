@@ -1,15 +1,31 @@
-# 🎸 **Dead-beat** 👽 
-## *Help! Our dead-beat sprite is on a rhythm fuelled collision course with the earth. Move dead-beat to the groove of the music, and catch as many parachute material patches as he falls through the rhythm of the sky*
+# **Dead-beat**
+## *Help! Our dead-beat sprite is on a rhythm fuelled collision course with the earth. Move dead-beat to the groove of the music, and catch as many parachute material patches as he falls through the rhythm of the sky, will you collect enough to make a parachute*
 
 ## Wireframes for the game
 
-![wireframes](wireframes/dead-beat-wireframes.pdf)
+![wireframes](./wireframes/dead-beat-wireframes.pdf)
 
 ## How to play
 
 * Arrow keys - move left and right
 * Spacebar - Collect parachute material
-* Get as many, if not all the parachute material to win, aiming for the highest score
+* Collect enough patches to survive
+* Don't miss any notes to earn a multiplier and get a high score
+
+## Features
+
+- Collect parachute patches to the beat, get enough and survive
+- Collecting patches earns points & increases score multiplier
+- Missing patches resets your multiplier
+- Beat pattern matches the song including lining up with certain instruments, multiple playthroughs are needed to learn the song (replay-value)
+- Patches can appear as 1 beat, 1/2 beat, or 1/4beat
+- Movement intially feels decoupled from the beat, but can be aligned to the music too, to get the FLOW STATE!
+- Includes a variable BMP and the ability to split each beat into multiple notes for future songs
+- No load screens keep the player in the zone and game can quickly be restarted for another go
+    - Title Screen
+    - Game Screen
+    - Win Screen
+    - Lose Screen
 
 ## Setup
 
@@ -18,53 +34,15 @@
 [Click here to play!](https://debbiect246.github.io/dead-beat/)
 
 
-### Development
+### Development Changes
 
-## Game
+* Being a simple game, the Settings and how to play options were not needed, all information was included in the title screen.
 
-1. Variables
-- Initialise variables
-- Set a BPM to the song with a default of 4/4 measure
-- Sequence defines where the beats will spawn 1 to 4 are left to right, zero is no beat, on 4 notes per beat (default) 1,0,0,0 would be one note per beat
-- Dictionary changes the notes to x-position on screen
-- Multiplier determines how much the score is incremented for each beat hit accurately
+### Future Development
 
-2. Functions
-- Preload
-- Create
--   Sky image (added as tileSprite to access the scrolling method)
--   Create the group for beats
--   Create a timed event that will spawn an object for each note, defined by BPM and notesPerBeat
--   Timed event runs once a second to remove missed beats
--   Create the player sprite and remove gravity from it
--   Create variable that stores common key inputs
--   Check for overlap between player and beat
--   Displays the current score and multiplier
-- Update
--   Tells the sky to scroll at a specific speed
--   Move the player on left and right key inputs
-- DashLeft
--   Checks the current player position and creates a target that is 200px to the left of that
--   Prevents the user from dashing again for a a short period once the target destination is reached
-- DashRight
--   Checks the current player position and creates a target that is 200px to the right of that
--   Prevents the user from dashing again for a a short period once the target destination is reached
-- CheckSpacebarInput
--   If space is hit whilst the player and a beat overlap, this function is called
--   Triggers the increment score function and destroys the current beat
-- IncrementScore
--   Increases the score by (10 * score multiplier)
--   Then increases the multiplier by 0.2x if it is less then the cap which is 5.0x
--   Edits game text accordingly
-- BeatSpawn
--   Creates the beat object, sets its capped velocity
--   Only executes if a note is needed
--   Moves to the next note in the sequence
-- BeatRemover
--   Removes missed beats if they are off screen
-- SequenceComplete
--   When the sequence is over this runs and will eventually use a score to decide what to display
-
+* Obstacles that remove multiplier if hit
+* Star scoring system on win screen
+* Parachute guy lands on a win
 
 
 ## Credits

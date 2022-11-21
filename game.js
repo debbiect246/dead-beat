@@ -127,6 +127,7 @@ var titleScreen;
 // Multiplier determines how much the score is incremented for each beat hit accurately.
 var scoreMultiplier = 1.0;
 var score = 0;
+var beatsCollected = 0;
 
 
 function preload () {
@@ -155,9 +156,6 @@ function create () {
 
     // Create the group for beats
     beatsGroup = this.add.group();
-
-    //create ding sound when player grabs patch
-    ding = this.sound.add('ding');
 
     // Create variable that stores the games music
     gameMusic = this.sound.add('gameMusic');
@@ -302,7 +300,6 @@ function checkSpacebarInput(beat) {
         if (spacePressed === false) {
             beat.destroy()
             incrementScore() 
-            ding.play()
             spacePressed = true
         }
     }

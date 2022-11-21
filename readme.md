@@ -21,11 +21,13 @@
 - Patches can appear as 1 beat, 1/2 beat, or 1/4beat
 - Movement intially feels decoupled from the beat, but can be aligned to the music too, to get the FLOW STATE!
 - Includes a variable BMP and the ability to split each beat into multiple notes for future songs
+- Beats collected and score are decoupled, allowing an inexperienced player a chance at winning, and a pro player a focus on high score.
 - No load screens keep the player in the zone and game can quickly be restarted for another go
     - Title Screen
     - Game Screen
     - Win Screen
     - Lose Screen
+
 
 ## Setup
 

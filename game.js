@@ -114,20 +114,22 @@ var sequence = [0,0, //Track off by 1/2 beat
     2,2,0,0,
     3,0,4,0,]
 
-var currentNote = 0; // Where we currently are in the sequence
-var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
-var beatSpawnerEvent;
-var allowControl = false;
-var movingLeft = false;
-var movingRight = false;
-var spacePressed = false;
-var gameStarted = false;
-var gameOver = false;
+    var currentNote = 0; // Where we currently are in the sequence
+    var spawnerPositions = {1:100, 2:300, 3:500, 4:700}; // Dictionary changes the notes to x-position on screen
+    var beatSpawnerEvent;
+    var allowControl = false;
+    var movingLeft = false;
+    var movingRight = false;
+    var spacePressed = false;
+    var gameStarted = false;
+    var gameOver = false;
 var titleScreen;
 // Multiplier determines how much the score is incremented for each beat hit accurately.
 var scoreMultiplier = 1.0;
 var score = 0;
+var totalBeats = 0;
 var beatsCollected = 0;
+var beatsToWin = 0;
 
 
 function preload () {
@@ -156,6 +158,8 @@ function create () {
 
     // Create the group for beats
     beatsGroup = this.add.group();
+    sequence.forEach(countTotalBeats);
+    beatsToWin = Math.floor(totalBeats * 0.75);
 
     // Create variable that stores the games music
     gameMusic = this.sound.add('gameMusic');
@@ -298,9 +302,10 @@ function handleMovemet() {
 function checkSpacebarInput(beat) {
     if (movementKeys.space.isDown) {
         if (spacePressed === false) {
-            beat.destroy()
-            incrementScore() 
-            spacePressed = true
+            beat.destroy();
+            incrementScore();
+            beatsCollected++;
+            spacePressed = true;
         }
     }
 }
@@ -364,13 +369,11 @@ function sequenceComplete() {
     beatSpawnerEvent.destroy();
 
     // Determines which end screen to display based on the player's score.
-    if (score >= 1000) {
+    if (beatsCollected >= beatsToWin) {
         winScreen()
     } else {
-        console.log("game over here");
         player.body.gravity.y = 600;  // Let player fall off screen
         scream.play();
-
         this.time.addEvent({ delay: 1000, callback: loseScreen, callbackScope: this, loop: false }); // Give time before loose screen activated
     }
 }
@@ -406,4 +409,10 @@ function loseScreen() {
 
 function restartGame() {
     window.location.reload();
+}
+
+function countTotalBeats(ele) {
+    if(ele != 0) {
+        totalBeats++;
+    }
 }

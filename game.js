@@ -130,12 +130,16 @@ var score = 0;
 var totalBeats = 0;
 var beatsCollected = 0;
 var beatsToWin = 0;
+var cloudGroup;
+var cloudDelay = 1000;
 
 
 function preload () {
     // loads images
     this.load.image('sky', './assets/images/sky.png');
+    this.load.image('backgroundClouds', './assets/images/background-clouds.png');
     this.load.image('beat', './assets/images/beat.png');
+    this.load.image('cloud', './assets/images/single-cloud.png');
     this.load.image('gameFailed', './assets/images/game-failed.png');
     this.load.image('titleScreen', './assets/images/title-screen.png');
     this.load.image('winSprite', './assets/images/win-player-sprite.png');
@@ -155,6 +159,10 @@ function preload () {
 function create () {
     // Sky image (added as tileSprite to access the scrolling method)
     sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
+    backgroundClouds = this.add.tileSprite(400, 300, 800, 600, 'backgroundClouds');
+    // Creates cloud generator
+    cloudGroup = this.add.group();
+    cloudGenerator = this.time.addEvent({ delay: cloudDelay, callback: makeCloud, callbackScope: this, loop: true, paused: false });
 
     // Create the group for beats
     beatsGroup = this.add.group();
@@ -234,6 +242,7 @@ function create () {
 function update () {
     // Tells the sky to scroll at a specific speed
     sky.tilePositionY += 0.2;
+    backgroundClouds.tilePositionY += 0.4;
 
     // Player movement
     if (allowControl == true) {
@@ -355,6 +364,13 @@ function beatRemover() {
             resetMultiplier()
         };
     });
+
+    // Removes Clouds
+    cloudGroup.children.each(function(cloud) {
+        if (cloud.y < -300) {
+            cloud.destroy();
+        };
+    });
 }
 
 
@@ -415,4 +431,23 @@ function countTotalBeats(ele) {
     if(ele != 0) {
         totalBeats++;
     }
+}
+
+function makeCloud() {
+    // Find position
+    position = Phaser.Math.Between(0,800);
+    speed = Phaser.Math.Between(-350,-2000);
+    size = Phaser.Math.Between(1.1,2.5);
+
+    // Make Cloud
+    var newCloud = this.physics.add.sprite(position, 1500,'cloud');
+    newCloud.allowGravity = false;
+    newCloud.setVelocityY(speed);
+    newCloud.setVelocityX(0);
+    newCloud.setMaxVelocity(500); 
+    newCloud.setScale(size);
+    newCloud.alpha = 0.3;
+    cloudGroup.add(newCloud);
+    // Change function fire time randomly
+    cloudDelay = Phaser.Math.Between(250,1500)
 }

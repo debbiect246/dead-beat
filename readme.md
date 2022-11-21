@@ -25,14 +25,13 @@
 - Movement intially feels decoupled from the beat, but can be aligned to the music too, to get the FLOW STATE!
 - Includes a variable BMP and the ability to split each beat into multiple notes for future songs
 - Beats collected and score are decoupled, allowing an inexperienced player a chance at winning, and a pro player a focus on high score.
+- Collecting every patch in one attempt grants you a perfect victory screen!
 - No load screens keep the player in the zone and game can quickly be restarted for another go
     - Title Screen
     - Game Screen
     - Win Screen
     - Lose Screen
 
-
-## Setup
 
 ### Deployed link
 
@@ -56,7 +55,7 @@
 * [freeSFX](https://freesfx.co.uk/)
 * [Music](https://soundcloud.com/alexproductionsmusic/energetic-rock-vlog-music-by-efficsounds-alex-productions-free-music-hiking-free-music)
 
-##Linked in details of team members
+## Linked in details of team members
 * [Kelvin Ward](https://www.linkedin.com/in/kelvinhere/)
 * [Shaun Buck](https://www.linkedin.com/in/shaun-buck-749093221/)
 * [Debbie Thompson](//www.linkedin.com/in/debbie-thompson-1baa4733/)

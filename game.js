@@ -143,6 +143,7 @@ function preload () {
     this.load.image('gameFailed', './assets/images/game-failed.png');
     this.load.image('titleScreen', './assets/images/title-screen.png');
     this.load.image('winSprite', './assets/images/win-player-sprite.png');
+    this.load.image('perfectWinSprite', './assets/images/perfect-player-sprite.png')
     this.load.image('loseSprite', './assets/images/lose-player-sprite.png');
     
     // load sprites
@@ -223,6 +224,10 @@ function create () {
     // Create end screen sprites and text and hide them for now.
     winImage = this.add.sprite(400, 300, 'winSprite');
     winImage.visible = false;
+    winImage.setScale(0.8)
+    perfectWinImage = this.add.sprite(400, 300, 'perfectWinSprite')
+    perfectWinImage.visible = false;
+    perfectWinImage.setScale(0.7)
     winText = this.add.text(40, 25, 'Congratulations, You Survived!', {fontSize: '40px', fill: '#000000'});
     winText.visible = false;
     
@@ -376,7 +381,7 @@ function beatRemover() {
 
 function resetMultiplier() {
     scoreMultiplier = 1.0
-    multiplierText.setText(`Multiplier = ${scoreMultiplier}x`)
+    multiplierText.setText(`${scoreMultiplier}x`)
 }
 
 
@@ -397,11 +402,16 @@ function sequenceComplete() {
 
 function winScreen() {
     // Displays if the player had at least 1000 score at game finish.
-    //player.visible = false;
     player.body.gravity.y = -600;
     scoreText.visible = false;
     multiplierText.visible = false;
-    winImage.visible = true;
+
+    if (beatsCollected == totalBeats) {
+        perfectWinImage.visible = true;
+    } else {
+        winImage.visible = true;
+    }
+
     winText.visible = true;
     finalScoreText.setText(`Final Score: ${score}`)
     finalScoreText.visible = true;

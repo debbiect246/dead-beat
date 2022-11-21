@@ -3,7 +3,10 @@
 
 ## Wireframes for the game
 
-![wireframes](./wireframes/dead-beat-wireframes.pdf)
+![Startup wireframe](./wireframes/dead-beat-startup-wireframe.png)
+![Gameplay wireframe](./wireframes/dead-beat-gameplay-wireframe.png)
+![Win wireframe](./wireframes/dead-beat-win-wireframe.png)
+![Perfect win wireframe](./wireframes/dead-beat-win100-wireframe.png)
 
 ## How to play
 
